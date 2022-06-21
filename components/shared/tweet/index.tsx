@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import moment from 'moment';
-import ArrowDown from '../../svgs/arrow-down.svg';
-import Replies from '../../svgs/replies.svg';
-import Retweet from '../../svgs/retweet.svg';
-import Heart from '../../svgs/heart.svg';
-import Share from '../../svgs/share.svg';
+import ArrowDown from '../../../svgs/arrow-down.svg';
+import Replies from '../../../svgs/replies.svg';
+import Retweet from '../../../svgs/retweet.svg';
+import Heart from '../../../svgs/heart.svg';
+import Share from '../../../svgs/share.svg';
 
 export interface ITweet {
 	id?: string;
@@ -35,7 +35,7 @@ const TweetComponent: React.FC<ITweet> = props => {
 					<div className="flex flex-grow flex-wrap items-center">
 						<div>
 							<span className="text-white font-bold mr-1 cursor-pointer hover:underline">
-								{props.name}
+								{props.name?.slice(0, 5) + '...' + props.name?.slice(props.name.length - 4)}
 							</span>
 							<span className="text-gray-600">
 								{props.username} . {moment(props.date).format('ll')}
