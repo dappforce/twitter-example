@@ -12,15 +12,6 @@ const LoginComponent = () => {
 	});
 
 	const submitForm = async () => {
-    const config = {
-      substrateNodeUrl: 'wss://rpc.subsocial.network',
-      offchainUrl: 'https://app.subsocial.network/offchain',
-      ipfsNodeUrl: 'https://app.subsocial.network/ipfs'
-    }
-    const flatApi = await newFlatSubsocialApi(config)
-    const spaceId = 1
-    const space = await flatApi.findSpace({id: spaceId as any})
-    console.log(space)
 	};
 
   useEffect(() => {
