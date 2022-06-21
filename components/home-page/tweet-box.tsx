@@ -2,11 +2,11 @@ import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
 // import sanitizeHtml from 'sanitize-html';
 import { useState } from 'react';
 import Link from 'next/link';
-import Gallery from '~/svgs/gallery.svg';
-import Gif from '~/svgs/gif.svg';
-import Poll from '~/svgs/poll.svg';
-import Emoji from '~/svgs/emojis.svg';
-import Schedule from '~/svgs/schedule.svg';
+import Gallery from '../../svgs/gallery.svg';
+import Gif from '../../svgs/gif.svg';
+import Poll from '../../svgs/poll.svg';
+import Emoji from '../../svgs/emojis.svg';
+import Schedule from '../../svgs/schedule.svg';
 import styles from './styles/tweet-box.module.css';
 const TweetBox: React.FC = () => {
 	const [tweetData, setTweet] = useState('');

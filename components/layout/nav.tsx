@@ -1,16 +1,16 @@
-import Home from '~/svgs/home.svg';
-import Explore from '~/svgs/hashtag.svg';
-import Notification from '~/svgs/notification.svg';
-import Envelope from '~/svgs/envelope.svg';
-import Bookmark from '~/svgs/bookmark.svg';
-import Profile from '~/svgs/profile.svg';
-import Settings from '~/svgs/settings.svg';
-import List from '~/svgs/list.svg';
-import Tweet from '~/svgs/tweet.svg';
+import Home from '../../svgs/home.svg';
+import Explore from '../../svgs/hashtag.svg';
+import Notification from '../../svgs/notification.svg';
+import Envelope from '../../svgs/envelope.svg';
+import Bookmark from '../../svgs/bookmark.svg';
+import Profile from '../../svgs/profile.svg';
+import Settings from '../../svgs/settings.svg';
+import List from '../../svgs/list.svg';
+import Tweet from '../../svgs/tweet.svg';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styles from './styles/nav.module.css';
-import useMedia from '~/hooks/useMedia';
+import useMedia from '../../hooks/useMedia';
 const links = [
 	{ href: '/home', icon: <Home height="1.4rem" />, title: 'Home' },
 	{ href: '/explore', icon: <Explore height="1.4rem" />, title: 'Explore' },

@@ -1,4 +1,4 @@
-import { ITweet } from "~/components/shared/tweet/index";
+import { ITweet } from "../components/shared/tweet/index";
 
 export const tweets: ITweet[] = [
   {

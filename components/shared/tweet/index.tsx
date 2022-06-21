@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import moment from 'moment';
-import ArrowDown from '~/svgs/arrow-down.svg';
-import Replies from '~/svgs/replies.svg';
-import Retweet from '~/svgs/retweet.svg';
-import Heart from '~/svgs/heart.svg';
-import Share from '~/svgs/share.svg';
+import ArrowDown from '../../svgs/arrow-down.svg';
+import Replies from '../../svgs/replies.svg';
+import Retweet from '../../svgs/retweet.svg';
+import Heart from '../../svgs/heart.svg';
+import Share from '../../svgs/share.svg';
 
 export interface ITweet {
 	id?: string;

@@ -1,10 +1,10 @@
-import CenterContent from '~/components/shared/center-content';
-import HomeCenterComponent from '~/components/home-page/home-center-component';
+import CenterContent from '../components/shared/center-content';
+import HomeCenterComponent from '../components/home-page/home-center-component';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
-import { INextPage } from '~/types/INextPage';
-const NewsWidget = dynamic(() => import('~/components/shared/news-widget'), { ssr: false });
-const WhoToFollowWidget = dynamic(() => import('~/components/shared/who-to-follow-widget'), {
+import { INextPage } from '../types/INextPage';
+const NewsWidget = dynamic(() => import('../components/shared/news-widget'), { ssr: false });
+const WhoToFollowWidget = dynamic(() => import('../components/shared/who-to-follow-widget'), {
 	ssr: false,
 });
 

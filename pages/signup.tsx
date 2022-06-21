@@ -1,7 +1,7 @@
 import Head from 'next/head';
-import { INextPage } from '~/types/INextPage';
+import { INextPage } from '../types/INextPage';
 import dynamic from 'next/dynamic';
-const SignupModal = dynamic(() => import('~/components/signup-page/signup-modal'));
+const SignupModal = dynamic(() => import('../components/signup-page/signup-modal'));
 
 const SignupPage: INextPage = () => {
 	return (

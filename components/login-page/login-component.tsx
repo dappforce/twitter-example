@@ -1,17 +1,32 @@
-import Logo from '~/svgs/logo.svg';
+import Logo from '../../svgs/logo.svg';
 import Input from '../shared/input';
 import { useForm } from 'react-hook-form';
 import Link from 'next/link';
+import { newFlatSubsocialApi } from '@subsocial/api'
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 const LoginComponent = () => {
 	const router = useRouter();
 	const { handleSubmit, register, errors } = useForm({
 		mode: 'onSubmit',
 	});
 
-	const submitForm = (values: any) => {
-		router.push('/home');
+	const submitForm = async () => {
+    const config = {
+      substrateNodeUrl: 'wss://rpc.subsocial.network',
+      offchainUrl: 'https://app.subsocial.network/offchain',
+      ipfsNodeUrl: 'https://app.subsocial.network/ipfs'
+    }
+    const flatApi = await newFlatSubsocialApi(config)
+    const spaceId = 1
+    const space = await flatApi.findSpace({id: spaceId as any})
+    console.log(space)
 	};
+
+  useEffect(() => {
+    submitForm()
+  }, [])
+
 	return (
 		<div className="flex flex-col justify-center  container mt-5 text-white mx-auto">
 			<Logo height="2.3rem" />

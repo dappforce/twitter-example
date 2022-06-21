@@ -1,4 +1,4 @@
-import Logo from '~/svgs/logo.svg';
+import Logo from '../../svgs/logo.svg';
 import Input from '../shared/input';
 import { useState, useRef, ChangeEvent } from 'react';
 import { useForm } from 'react-hook-form';
