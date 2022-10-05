@@ -8,13 +8,12 @@
     "start": "next start"
   },
   "dependencies": {
-    "@polkadot/extension-dapp": "^0.44.1",
-    "@polkadot/react-identicon": "^0.85.4",
+    "@polkadot/api": "latest",
+    "@polkadot/extension-dapp": "^0.44.6",
     "@polkadot/ui-keyring": "^0.85.4",
-    "@subsocial/api": "^0.6.10",
-    "@subsocial/definitions": "^0.6.10",
-    "@subsocial/types": "^0.6.10",
-    "@subsocial/utils": "^0.6.10",
+    "@subsocial/api": "0.7.5",
+    "@subsocial/types": "latest",
+    "@subsocial/utils": "0.7.5",
     "@svgr/webpack": "^5.4.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.2.0",
@@ -41,8 +40,6 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
-    "@polkadot/ts": "^0.3.66",
-    "@subsocial/config": "0.6.10",
     "@types/bn.js": "^5.1.0",
     "@types/moment": "^2.13.0",
     "@types/node": "^14.0.14",
@@ -63,6 +60,10 @@
     "prettier": "^2.0.5",
     "tailwindcss": "^1.4.6",
     "typescript": "^3.9.5"
+  },
+  "resolutions": {
+    "@polkadot/api": "9.2.4",
+    "@polkadot/types": "9.2.4"
   },
   "license": "MIT",
   "keywords": [

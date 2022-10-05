@@ -1,8 +1,7 @@
 import Logo from '../../svgs/logo.svg';
-import { newFlatSubsocialApi } from '@subsocial/api'
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { connect, fetchProfile } from '~/logics';
+import { connect, createSpace, fetchProfile } from '~/logics';
 const LoginComponent = () => {
   const router = useRouter();
 

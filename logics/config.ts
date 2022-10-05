@@ -1,7 +1,6 @@
 const config = {
-  substrateNodeUrl: 'wss://testnet.subsocial.network',
-  offchainUrl: 'https://staging.subsocial.network/offchain',
-  ipfsNodeUrl: 'https://staging.subsocial.network/ipfs'
+  substrateNodeUrl: 'wss://rco-para.subsocial.network',
+  ipfsNodeUrl: 'https://crustwebsites.net'
 }
 
 export default config

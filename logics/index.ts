@@ -1,24 +1,40 @@
-import { newFlatSubsocialApi } from '@subsocial/api'
-import { FlatSubsocialApi } from '@subsocial/api/flat-subsocial'
-import { ProfileData } from '@subsocial/types/dto'
+import { SubsocialApi, SubsocialIpfsApi } from '@subsocial/api'
 import config from './config'
 import {
-  IpfsContent,
-  OptionBool,
-  SpaceUpdate
-} from "@subsocial/types/substrate/classes"
+  IpfsContent
+} from '@subsocial/api/substrate/wrappers'
+import { RawSpaceData } from '@subsocial/api/types'
+import { generateCrustAuthToken } from '@subsocial/api/utils/ipfs'
+import { waitReady } from '@polkadot/wasm-crypto'
 
-let flatApi: FlatSubsocialApi
+let flatApi: SubsocialApi
+let ipfs: SubsocialIpfsApi
 let selectedAddress: string
-let selectedProfile: ProfileData | undefined
-const spaceId = '1015'
+let selectedProfile: RawSpaceData | undefined
+const spaceId = '9953'
 
-export const connect = async () => flatApi = await newFlatSubsocialApi({
-  ...config,
-  useServer: {
-    httpRequestMethod: 'get'
-  }
-})
+export const connect = async () => {
+
+  console.log('connecting....')
+  flatApi = await SubsocialApi.create({
+    ...config,
+    useServer: {
+      httpRequestMethod: 'get'
+    }
+  })
+
+  await waitReady()
+  const authHeader = generateCrustAuthToken('bottom drive obey lake curtain smoke basket hold race lonely fit walk//Alice')
+
+  ipfs = new SubsocialIpfsApi({
+    ipfsNodeUrl: 'https://crustwebsites.net'
+  })
+
+  ipfs.setWriteHeaders({
+    authorization: 'Basic ' + authHeader
+  })
+  console.log('connected. ', flatApi)
+}
 
 export const signAndSendTx = async (tx: any) => {
   const { isWeb3Injected, web3Enable, web3AccountsSubscribe, web3FromAddress } = await import('@polkadot/extension-dapp')
@@ -64,8 +80,9 @@ export const signAndSendTx = async (tx: any) => {
 
 export const fetchProfile = async (address: string) => {
   const accountId = address
-  const profile = await flatApi.findProfile(accountId)
-  console.log(profile)
+  const profileSpaceId = await flatApi.blockchain.profileSpaceIdByAccount(accountId)
+  const profile = await flatApi.base.findSpace({ id: profileSpaceId.toString() })
+  console.log(profileSpaceId.toString(), JSON.stringify(profile?.struct))
   selectedAddress = address
   selectedProfile = profile
 }
@@ -80,17 +97,15 @@ export const fetchPosts = async () => {
 }
 
 export const createSpace = async () => {
-  const cid = await flatApi.subsocial.ipfs.saveContent({
+  const cid = await ipfs.saveContent({
     about: 'Coders Space',
     name: 'Live Streamers',
     tags: ['youtuber', 'builder']
   } as any)
 
-  const substrateApi = await flatApi.subsocial.substrate.api
+  const substrateApi = await flatApi.blockchain.api
 
   const spaceTransaction = substrateApi.tx.spaces.createSpace(
-    null, // Parent Id (optional)
-    null, // Handle name (optional)
     IpfsContent(cid),
     null // Permissions config (optional)
   )
@@ -100,23 +115,25 @@ export const createSpace = async () => {
 }
 
 export const postTweet = async (tweet: string) => {
-  const cid = await flatApi.subsocial.ipfs.saveContent({
-    title: selectedProfile ? selectedProfile.content?.name : selectedAddress,
+  console.log('ipfs', ipfs)
+  const cid = await ipfs.saveContent({
+    title: selectedProfile && selectedProfile.content?.name ? selectedProfile.content?.name : selectedAddress,
     body: tweet,
-    avatar: selectedProfile ? selectedProfile.content?.avatar : ''
+    avatar: selectedProfile && selectedProfile.content?.image ? selectedProfile.content?.image : ''
   })
+  console.log(cid)
 
-  const substrateApi = await flatApi.subsocial.substrate.api
+  const substrateApi = await flatApi.blockchain.api
   const postTransaction = substrateApi.tx.posts.createPost(
-    spaceId, 
+    spaceId,
     { RegularPost: null }, // Creates a regular post.
-    IpfsContent(cid)
+    { IPFS: IpfsContent(cid) }
   )
   signAndSendTx(postTransaction)
 }
 
 export const likeTweet = async (tweetId: string) => {
-  const substrateApi = flatApi.subsocial.substrate.api
+  const substrateApi = flatApi.blockchain.api
 
   const reactionTx = (await substrateApi).tx.reactions.createPostReaction(tweetId, 'Upvote')
   signAndSendTx(reactionTx)

@@ -23,8 +23,8 @@ const HomeCenterComponent = () => {
         avatar: "/images/personal.jpg",
         date: Date.now(),
         likes: struct.upvotesCount.toNumber(),
-        replies: struct.repliesCount.toNumber(),
-        retweets: struct.repliesCount.toNumber(),
+        replies: struct.downvotesCount.toNumber(),
+        retweets: struct.downvotesCount.toNumber(),
       }
     })
     setTweets(tweetsData as any as ITweet[])
