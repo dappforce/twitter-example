@@ -4,19 +4,19 @@ import {
   IpfsContent
 } from '@subsocial/api/substrate/wrappers'
 import { RawSpaceData } from '@subsocial/api/types'
-import { generateCrustAuthToken } from '@subsocial/api/utils/ipfs'
 import { waitReady } from '@polkadot/wasm-crypto'
 
-let flatApi: SubsocialApi
+let api: SubsocialApi
 let ipfs: SubsocialIpfsApi
 let selectedAddress: string
 let selectedProfile: RawSpaceData | undefined
 const spaceId = '9953'
+const CRUST_AUTH_HEADER = 'c3ViLTVGQTluUURWZzI2N0RFZDhtMVp5cFhMQm52TjdTRnhZd1Y3bmRxU1lHaU45VFRwdToweDEwMmQ3ZmJhYWQwZGUwNzFjNDFmM2NjYzQzYmQ0NzIxNzFkZGFiYWM0MzEzZTc5YTY3ZWExOWM0OWFlNjgyZjY0YWUxMmRlY2YyNzhjNTEwZGY4YzZjZTZhYzdlZTEwNzY2N2YzYTBjZjM5OGUxN2VhMzAyMmRkNmEyYjc1OTBi'
 
 export const connect = async () => {
 
   console.log('connecting....')
-  flatApi = await SubsocialApi.create({
+  api = await SubsocialApi.create({
     ...config,
     useServer: {
       httpRequestMethod: 'get'
@@ -24,16 +24,12 @@ export const connect = async () => {
   })
 
   await waitReady()
-  const authHeader = generateCrustAuthToken('bottom drive obey lake curtain smoke basket hold race lonely fit walk//Alice')
 
-  ipfs = new SubsocialIpfsApi({
-    ipfsNodeUrl: 'https://crustwebsites.net'
+  api.ipfs.setWriteHeaders({
+    authorization: 'Basic ' + CRUST_AUTH_HEADER
   })
-
-  ipfs.setWriteHeaders({
-    authorization: 'Basic ' + authHeader
-  })
-  console.log('connected. ', flatApi)
+  ipfs = api.ipfs
+  console.log('connected. ', api)
 }
 
 export const signAndSendTx = async (tx: any) => {
@@ -80,17 +76,17 @@ export const signAndSendTx = async (tx: any) => {
 
 export const fetchProfile = async (address: string) => {
   const accountId = address
-  const profileSpaceId = await flatApi.blockchain.profileSpaceIdByAccount(accountId)
-  const profile = await flatApi.base.findSpace({ id: profileSpaceId.toString() })
+  const profileSpaceId = await api.blockchain.profileSpaceIdByAccount(accountId)
+  const profile = await api.base.findSpace({ id: profileSpaceId.toString() })
   console.log(profileSpaceId.toString(), JSON.stringify(profile?.struct))
   selectedAddress = address
   selectedProfile = profile
 }
 
 export const fetchPosts = async () => {
-  const postIds = await flatApi.subsocial.substrate.postIdsBySpaceId(spaceId as any)
+  const postIds = await api.blockchain.postIdsBySpaceId(spaceId as any)
 
-  const posts = await flatApi.subsocial.findPosts({ ids: postIds })
+  const posts = await api.base.findPosts({ ids: postIds })
 
   console.log(posts)
   return posts
@@ -103,7 +99,7 @@ export const createSpace = async () => {
     tags: ['youtuber', 'builder']
   } as any)
 
-  const substrateApi = await flatApi.blockchain.api
+  const substrateApi = await api.blockchain.api
 
   const spaceTransaction = substrateApi.tx.spaces.createSpace(
     IpfsContent(cid),
@@ -123,7 +119,7 @@ export const postTweet = async (tweet: string) => {
   })
   console.log(cid)
 
-  const substrateApi = await flatApi.blockchain.api
+  const substrateApi = await api.blockchain.api
   const postTransaction = substrateApi.tx.posts.createPost(
     spaceId,
     { RegularPost: null }, // Creates a regular post.
@@ -133,7 +129,7 @@ export const postTweet = async (tweet: string) => {
 }
 
 export const likeTweet = async (tweetId: string) => {
-  const substrateApi = flatApi.blockchain.api
+  const substrateApi = api.blockchain.api
 
   const reactionTx = (await substrateApi).tx.reactions.createPostReaction(tweetId, 'Upvote')
   signAndSendTx(reactionTx)
